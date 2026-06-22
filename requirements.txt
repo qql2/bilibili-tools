@@ -1,0 +1,2 @@
+# 依赖已由 MediaCrawler 管理
+# 见 ~/MediaCrawler/requirements.txt
