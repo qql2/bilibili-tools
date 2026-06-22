@@ -38,6 +38,7 @@ def run_crawler(bvid: str, max_comments: int = 60) -> bool:
     result = subprocess.run(
         [python, main_py, "--platform", "bili", "--type", "detail",
          "--specified_id", bvid, "--headless", "yes",
+         "--get_sub_comment", "yes",
          "--max_comments_count_singlenotes", str(max_comments)],
         cwd=MEDIACRAWLER_DIR,
         capture_output=True,
