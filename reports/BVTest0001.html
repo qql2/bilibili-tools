@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+<head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1.0">
+<title>测试视频 — 评论观点分析</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f5f5;color:#333;line-height:1.6;padding:20px}
+.w{max-width:800px;margin:0 auto}
+.hd{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.hd h1{font-size:20px;margin-bottom:8px;color:#00a1d6}
+.hd .m{font-size:14px;color:#666}
+.st{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:#888}
+.ar{background:#fff;border-radius:12px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.1);overflow:hidden}
+.ah{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;user-select:none}
+.ah:hover{background:#fafafa}
+.at{font-size:17px;font-weight:600;color:#222}
+.as{font-size:14px;color:#666;margin-top:4px}
+.bd{background:#00a1d6;color:#fff;border-radius:20px;padding:2px 10px;font-size:12px;white-space:nowrap}
+.tg{font-size:14px;color:#999;margin-left:8px}
+.ab{display:none;padding:0 20px 16px;border-top:1px solid #eee}
+.ab.o{display:block}
+.cc{background:#f9f9f9;border-radius:8px;padding:12px;margin-top:10px;border-left:3px solid #00a1d6}
+.cm{font-size:12px;color:#888;margin-bottom:4px}
+.lk{color:#f73131;font-weight:600}
+.ct{font-size:14px;margin-bottom:6px;white-space:pre-wrap}
+.cl{font-size:12px;color:#00a1d6;text-decoration:none}
+.cl:hover{text-decoration:underline}
+.sb{margin-top:8px;padding-left:12px;border-left:2px solid #ddd;font-size:13px;color:#555}
+.si{margin:4px 0}
+.sn{color:#888}
+.ft{text-align:center;font-size:12px;color:#aaa;margin:20px 0}
+</style></head>
+<body>
+<div class=w>
+<div class=hd>
+<h1>📹 测试视频</h1>
+<div class=m>👤 UP主：测试UP &nbsp;|&nbsp; BVID：BVTest0001</div>
+<div class=st><span>👍 12345</span><span>💬 分析来源：1 条热门评论</span></div>
+</div>
+<div class=ar>
+<div class=ah><div><div class=at>1. 统一回复</div>
+<div class=as>这是一个测试论点段落，用于验证 --gen-report 模式能否正常工作。</div></div>
+<div style=text-align:right;flex-shrink:0>
+<span class=bd>1 条</span><span class=tg>▼</span></div></div>
+<div class=ab><div class=cc>
+<div class=cm><span class=lk>❤ 999</span> &nbsp; 吃货一号</div>
+<div class=ct>好吃好吃</div>
+<a class=cl href="https://www.bilibili.com/video/BVTest0001#reply1" target=_blank>🔗 查看原文</a></div></div></div>
+<div class=ft>数据来源：Bilibili API via MediaCrawler | 2026-06-23 17:59</div>
+</div>
+<script>
+document.querySelectorAll('.ah').forEach(function(h){
+h.addEventListener('click',function(){
+var b=h.nextElementSibling;b.classList.toggle('o');
+h.querySelector('.tg').textContent=b.classList.contains('o')?'▲':'▼';
+})
+})
+</script>
+</body>
+</html>
