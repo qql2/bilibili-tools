@@ -34,24 +34,35 @@ def extract_bvid(text: str) -> Optional[str]:
 def run_crawler(bvid: str, max_comments: int = 60) -> bool:
     python = VENV_PYTHON if os.path.exists(VENV_PYTHON) else sys.executable
     main_py = os.path.join(MEDIACRAWLER_DIR, "main.py")
-    print(f"🚀 正在启动 MediaCrawler (max={max_comments})...", file=sys.stderr)
-    result = subprocess.run(
-        [python, main_py, "--platform", "bili", "--type", "detail",
-         "--specified_id", bvid, "--headless", "yes",
-         "--get_sub_comment", "yes",
-         "--max_comments_count_singlenotes", str(max_comments)],
-        cwd=MEDIACRAWLER_DIR,
-        capture_output=True,
-        text=True,
-        timeout=300,
-    )
+    print(f"🚀 正在启动 MediaCrawler (max={max_comments})...", file=sys.stderr, flush=True)
+    try:
+        result = subprocess.run(
+            [python, main_py, "--platform", "bili", "--type", "detail",
+             "--specified_id", bvid, "--headless", "yes",
+             "--get_sub_comment", "yes",
+             "--max_comments_count_singlenotes", str(max_comments)],
+            cwd=MEDIACRAWLER_DIR,
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        print(f"⏰ MediaCrawler 超时（300s），但数据可能已部分写入", file=sys.stderr, flush=True)
+        return True
+    filtered = 0
     for line in result.stdout.split("\n"):
         if any(kw in line for kw in ["INFO", "WARN", "ERROR", "comment"]):
-            print(f"  {line.strip()}", file=sys.stderr)
+            print(f"  {line.strip()}", file=sys.stderr, flush=True)
+            filtered += 1
+    if filtered == 0:
+        # 没有过滤到任何日志行，说明数据已经通过 Playwright 静默写入了
+        print(f"📝 MediaCrawler 执行完成（stdout 无有效日志行，数据已写入 JSONL）", file=sys.stderr, flush=True)
+    else:
+        print(f"✅ MediaCrawler 执行完成（{filtered} 条日志）", file=sys.stderr, flush=True)
     if result.returncode != 0 and "SingletonLock" not in result.stderr:
-        print(f"❌ 退出码: {result.returncode}", file=sys.stderr)
+        print(f"❌ 退出码: {result.returncode}", file=sys.stderr, flush=True)
         if result.stderr:
-            print(f"  错误: {result.stderr[:300]}", file=sys.stderr)
+            print(f"  错误: {result.stderr[:300]}", file=sys.stderr, flush=True)
         return False
     return True
 

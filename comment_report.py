@@ -161,7 +161,18 @@ if __name__ == "__main__":
 
     if args.gen_report:
         # --gen-report 模式：从 stdin 读取分析结果 JSON
-        data = json.loads(sys.stdin.read())
+        raw = sys.stdin.read()
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as e:
+            context = raw[max(0, e.pos-60):e.pos+60]
+            print(f"❌ --gen-report 输入的 JSON 解析失败（行 {e.lineno} 列 {e.colno}）", file=sys.stderr)
+            print(f"  常见原因：中文引号用了 ASCII 双引号「\"」而非 JSON 字符串的转义格式", file=sys.stderr)
+            print(f"  解决：使用 Python json.dumps(ensure_ascii=False) 构建 JSON，不要手写", file=sys.stderr)
+            print(f"  --- 错误位置上下文 ---", file=sys.stderr)
+            print(f"  {context}", file=sys.stderr)
+            print(f"  ---", file=sys.stderr)
+            sys.exit(1)
         title = data["video"]["title"]
         bvid = data["video"]["bvid"]
         owner = data["video"]["owner"]
